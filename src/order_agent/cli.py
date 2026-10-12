@@ -1,8 +1,13 @@
-from typing import Dict
+from typing import Any, Dict
 
 from src.order_agent.logging_setup import logger
 from src.order_agent.config import config
 from src.order_agent.tools import lookup_order, calculate_total
+from src.order_agent.models import ToolResult
+
+
+
+
 
 if __name__ == '__main__':
     logger.info("Starting order agent")
