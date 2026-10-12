@@ -26,15 +26,14 @@ def lookup_order(order_id: str) -> ToolResult:
     )
 
 
-def calculate_total(orders: List[Dict[str, Any]]) -> ToolResult:
+def calculate_total(order: Dict[str, Any]) -> ToolResult:
     """Calculate the total price of an order and delivery price."""
     total_price = 0
 
-    for order in orders:
-        total_price += order["delivery_price"]
-        if isinstance(order["items"], Dict):
-            for item in order["items"].values():
-                total_price += item["price"]
+    total_price += order["delivery_price"]
+    if isinstance(order["items"], Dict):
+        for item in order["items"].values():
+            total_price += item["price"]
 
     return ToolResult(
         ok=True,
@@ -53,4 +52,4 @@ def dispatch(action: str, arguments: Dict[str, Any]) -> ToolResult:
     tool = TOOL_REGISTRY.get(action)
     if tool is None:
         return ToolResult(ok=False, error="Unknown action")
-    return tool(arguments)
+    return tool(**arguments)
