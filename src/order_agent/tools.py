@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Any, Dict, List
 
 
 FAKE_ORDERS = {
@@ -10,9 +10,17 @@ FAKE_ORDERS = {
 
 def lookup_order(order_id: str) -> Dict | str:
     """Get information about an order by ID."""
-    pass
+    return FAKE_ORDERS.get(order_id, "order_not_found")
 
 
-def calculate_total(orders: List[Dict[str, object]]) -> int:
+def calculate_total(orders: List[Dict[str, Any]]) -> int:
     """Calculate the total price of an order and delivery price."""
-    pass
+    total_price = 0
+
+    for order in orders:
+        total_price += order["delivery_price"]
+        if isinstance(order["items"], Dict):
+            for item in order["items"].values():
+                total_price += item["price"]
+
+    return total_price
