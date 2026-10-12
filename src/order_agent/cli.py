@@ -14,9 +14,9 @@ if __name__ == '__main__':
 
     order = lookup_order("ORD-104")
 
-    if not isinstance(order, Dict):
+    if not order.ok:
         logger.info(order)
     else:
         logger.info(order)
-        total_price = calculate_total([order])
+        total_price = calculate_total([order.data])
         logger.info(f"Total price: {total_price}")
