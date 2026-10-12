@@ -1,22 +1,25 @@
-from typing import Any, Dict
-
 from src.order_agent.logging_setup import logger
-from src.order_agent.config import config
 from src.order_agent.tools import dispatch
+from src.order_agent.agent import Model
+from src.order_agent.prompts import DECISION_SYSTEM_PROMPT
+
+
+model = Model()
 
 
 if __name__ == '__main__':
     logger.info("Starting order agent")
 
-    action = "lookup_order"
-    arguments =  {"order_id": "ORD-101"}
+    system_prompt = {
+        "role": "system",
+        "content": DECISION_SYSTEM_PROMPT
+    }
 
-    order = dispatch(action, arguments)
-    logger.info(order)
+    user_prompt = {
+        "role": "user",
+        "content": "Какова итоговая стоимость заказа ORD-101 с доставкой?"
+    }
 
-    action = "calculate_total"
-    arguments = {"order": order.data}
+    result = model.invoke(system_prompt, user_prompt)
 
-    result = dispatch(action, arguments)
-
-    logger.info(result)
+    print(type(result))
